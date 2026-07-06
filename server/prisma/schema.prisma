@@ -1,0 +1,203 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum AIModel {
+  GPT4
+  CLAUDE
+  GEMINI
+  LLAMA
+  MISTRAL
+}
+
+enum Visibility {
+  PRIVATE
+  PUBLIC
+}
+
+enum ChatRole {
+  USER
+  ASSISTANT
+}
+
+model User {
+  id                        String                     @id @default(cuid())
+  firstName                 String
+  lastName                  String?
+  email                     String                     @unique
+  password                  String
+  role                      Role                       @default(USER)
+  isEmailVerified           Boolean                    @default(false)
+
+  sessions                  Session[]
+  emailVerificationTokens   EmailVerificationToken[]
+  passwordResetTokens       PasswordResetToken[]
+  prompts                   Prompt[]
+  collections               Collection[]
+  chats                     Chat[]
+
+  createdAt                 DateTime                   @default(now())
+  updatedAt                 DateTime                   @updatedAt
+}
+
+model Session {
+  id            String   @id @default(cuid())
+
+  refreshToken  String   @unique
+
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userAgent     String?
+  ipAddress     String?
+  browser       String?
+  os            String?
+  device        String?
+
+  lastActiveAt  DateTime @default(now())
+  expiresAt     DateTime
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model EmailVerificationToken {
+  id         String   @id @default(cuid())
+
+  token      String   @unique
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  expiresAt  DateTime
+
+  createdAt  DateTime @default(now())
+}
+
+model PasswordResetToken {
+  id         String   @id @default(cuid())
+
+  token      String   @unique
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  expiresAt  DateTime
+
+  createdAt  DateTime @default(now())
+}
+
+model Collection {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+
+  ownerId     String
+  owner        User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  prompts      Prompt[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Prompt {
+  id            String        @id @default(cuid())
+
+  title         String
+  description   String?
+  content       String        @db.Text
+
+  aiModel       AIModel
+  visibility    Visibility    @default(PRIVATE)
+
+  isFavorite    Boolean       @default(false)
+  isArchived    Boolean       @default(false)
+
+  collectionId  String?
+  collection    Collection?   @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  tags          PromptTag[]
+  versions      PromptVersion[]
+
+  ownerId       String
+  owner         User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+
+  prompts   PromptTag[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PromptTag {
+  promptId String
+  tagId    String
+
+  prompt Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([promptId, tagId])
+}
+
+model PromptVersion {
+  id            String      @id @default(cuid())
+
+  title         String
+  description   String?
+  content       String      @db.Text
+
+  aiModel       AIModel
+  visibility    Visibility
+
+  promptId      String
+  prompt        Prompt      @relation(fields: [promptId], references: [id], onDelete: Cascade)
+
+  versionNumber Int
+
+  createdAt     DateTime    @default(now())
+}
+
+model Chat {
+  id        String        @id @default(cuid())
+
+  title     String
+
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  messages  ChatMessage[]
+
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model ChatMessage {
+  id        String      @id @default(cuid())
+
+  role      ChatRole
+
+  content   String      @db.Text
+
+  chatId    String
+  chat      Chat        @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime    @default(now())
+}
+
