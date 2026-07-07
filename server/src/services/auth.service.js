@@ -31,6 +31,10 @@ const register = async (userData) => {
 const login = async ({ email, password }, deviceInfo) => {
   const user = await findUserByEmail(email);
 
+  if (!user) {
+    throw new ApiError(401, "Invalid email or password");
+  }
+
   if (!user.isEmailVerified) {
     throw new ApiError(403, "Please verify your email before logging in.");
   }
