@@ -1,11 +1,19 @@
-const { Resend } = require("resend");
+const nodemailer = require("nodemailer");
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: false, // false for port 587
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 const sendVerificationEmail = async (email, token) => {
   const verificationUrl = `${process.env.CLIENT_URL}/verify-email?token=${token}`;
 
-  await resend.emails.send({
+  await transporter.sendMail({
     from: process.env.EMAIL_FROM,
     to: email,
     subject: "Verify your email",
@@ -36,7 +44,7 @@ const sendVerificationEmail = async (email, token) => {
 const sendPasswordResetEmail = async (email, token) => {
   const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${token}`;
 
-  await resend.emails.send({
+  await transporter.sendMail({
     from: process.env.EMAIL_FROM,
     to: email,
     subject: "Reset your password",
