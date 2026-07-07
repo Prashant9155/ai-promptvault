@@ -1,6 +1,5 @@
 const nodemailer = require("nodemailer");
 
-
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
@@ -12,6 +11,10 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendVerificationEmail = async (email, token) => {
+  console.log("SMTP HOST:", process.env.SMTP_HOST);
+  console.log("SMTP PORT:", process.env.SMTP_PORT);
+  console.log("SMTP USER:", process.env.SMTP_USER);
+  console.log("CLIENT_URL:", process.env.CLIENT_URL);
   const verificationUrl = `${process.env.CLIENT_URL}/verify-email?token=${token}`;
 
   try {
