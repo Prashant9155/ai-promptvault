@@ -25,14 +25,14 @@ const sendEmail = async ({ to, subject, htmlContent }) => {
           "api-key": process.env.BREVO_API_KEY,
           "content-type": "application/json",
         },
-      }
+      },
     );
 
     console.log("✅ Email sent:", response.data);
   } catch (error) {
     console.error(
       "❌ Brevo Email Error:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -45,45 +45,143 @@ const sendVerificationEmail = async (email, token) => {
     to: email,
     subject: "Verify your AI PromptVault account",
     htmlContent: `
-      <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:20px">
-        <h2>Welcome to AI PromptVault 🚀</h2>
+        <div style="
+        background:#f5f7fb;
+        padding:40px 20px;
+        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+        ">
 
-        <p>Thanks for creating your account.</p>
+        <div style="
+        max-width:620px;
+        margin:auto;
+        background:#ffffff;
+        border-radius:16px;
+        overflow:hidden;
+        box-shadow:0 10px 35px rgba(0,0,0,.08);
+        ">
 
-        <p>Please verify your email by clicking the button below.</p>
-
-        <a
-          href="${verificationUrl}"
-          style="
-            display:inline-block;
-            padding:12px 24px;
+        <div style="
             background:#111827;
-            color:#ffffff;
-            text-decoration:none;
-            border-radius:8px;
-            font-weight:bold;
-          "
-        >
-          Verify Email
-        </a>
+            text-align:center;
+            padding:32px;
+        ">
 
-        <p style="margin-top:24px">
-          Or copy and paste this link into your browser:
-        </p>
+            <img
+            src="${process.env.LOGO_URL}"
+            alt="AI PromptVault"
+            width="70"
+            style="margin-bottom:14px;"
+            />
 
-        <p>
-          <a href="${verificationUrl}">
+            <h1 style="
+            color:white;
+            margin:0;
+            font-size:30px;
+            ">
+            AI PromptVault
+            </h1>
+
+            <p style="
+            color:#d1d5db;
+            margin-top:10px;
+            font-size:15px;
+            ">
+            Secure your AI prompts in one place.
+            </p>
+
+        </div>
+
+        <div style="padding:40px">
+
+            <h2 style="
+            margin-top:0;
+            color:#111827;
+            ">
+            Welcome 👋
+            </h2>
+
+            <p style="
+            color:#4b5563;
+            line-height:1.8;
+            ">
+            Thanks for joining <strong>AI PromptVault</strong>.
+            </p>
+
+            <p style="
+            color:#4b5563;
+            line-height:1.8;
+            ">
+            Please verify your email address to activate your account.
+            </p>
+
+            <div style="text-align:center;margin:40px 0;">
+
+            <a
+                href="${verificationUrl}"
+                style="
+                background:#2563eb;
+                color:#fff;
+                padding:16px 34px;
+                border-radius:12px;
+                text-decoration:none;
+                display:inline-block;
+                font-weight:600;
+                font-size:16px;
+                "
+            >
+                Verify Email
+            </a>
+
+            </div>
+
+            <p style="
+            color:#6b7280;
+            font-size:14px;
+            ">
+            This verification link expires in
+            <strong>24 hours</strong>.
+            </p>
+
+            <p style="
+            color:#6b7280;
+            font-size:14px;
+            word-break:break-word;
+            ">
             ${verificationUrl}
-          </a>
-        </p>
+            </p>
 
-        <hr />
+            <hr style="
+            margin:35px 0;
+            border:none;
+            border-top:1px solid #e5e7eb;
+            ">
 
-        <p style="color:#666;font-size:13px">
-          If you didn't create this account, you can safely ignore this email.
-        </p>
-      </div>
-    `,
+            <p style="
+            color:#9ca3af;
+            font-size:13px;
+            line-height:1.7;
+            ">
+            If you didn't create an account,
+            you can safely ignore this email.
+            </p>
+
+        </div>
+
+        </div>
+
+        <div style="
+        text-align:center;
+        margin-top:25px;
+        color:#9ca3af;
+        font-size:13px;
+        ">
+
+        © ${new Date().getFullYear()} AI PromptVault
+
+        </div>
+
+        </div>
+        `,
   });
 };
 
@@ -93,50 +191,177 @@ const sendPasswordResetEmail = async (email, token) => {
   await sendEmail({
     to: email,
     subject: "Reset your AI PromptVault password",
-    htmlContent: `
-      <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:20px">
-        <h2>Reset Password</h2>
+            htmlContent: `
+            <div style="
+            background:#f5f7fb;
+            padding:40px 20px;
+            font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+            ">
 
-        <p>We received a request to reset your password.</p>
+            <div style="
+            max-width:620px;
+            margin:auto;
+            background:#ffffff;
+            border-radius:16px;
+            overflow:hidden;
+            box-shadow:0 10px 35px rgba(0,0,0,.08);
+            ">
 
-        <p>Click the button below to continue.</p>
+            <!-- Header -->
+            <div style="
+                background:#111827;
+                text-align:center;
+                padding:32px;
+            ">
 
-        <a
-          href="${resetUrl}"
-          style="
-            display:inline-block;
-            padding:12px 24px;
-            background:#dc2626;
-            color:#ffffff;
-            text-decoration:none;
-            border-radius:8px;
-            font-weight:bold;
-          "
-        >
-          Reset Password
-        </a>
+                <img
+                src="${process.env.LOGO_URL}"
+                alt="AI PromptVault"
+                width="72"
+                style="margin-bottom:16px;"
+                />
 
-        <p style="margin-top:24px">
-          Or copy and paste this link:
-        </p>
+                <h1 style="
+                color:#ffffff;
+                margin:0;
+                font-size:30px;
+                font-weight:700;
+                ">
+                AI PromptVault
+                </h1>
 
-        <p>
-          <a href="${resetUrl}">
-            ${resetUrl}
-          </a>
-        </p>
+                <p style="
+                color:#d1d5db;
+                margin-top:10px;
+                font-size:15px;
+                ">
+                Secure your AI prompts in one place.
+                </p>
 
-        <p style="color:#666;font-size:13px">
-          This link expires in 15 minutes.
-        </p>
+            </div>
 
-        <hr />
+            <!-- Body -->
+            <div style="padding:40px">
 
-        <p style="color:#666;font-size:13px">
-          If you didn't request a password reset, simply ignore this email.
-        </p>
-      </div>
-    `,
+                <h2 style="
+                margin-top:0;
+                color:#111827;
+                font-size:28px;
+                ">
+                🔒 Reset Your Password
+                </h2>
+
+                <p style="
+                color:#4b5563;
+                line-height:1.8;
+                font-size:16px;
+                ">
+                We received a request to reset the password for your
+                <strong>AI PromptVault</strong> account.
+                </p>
+
+                <p style="
+                color:#4b5563;
+                line-height:1.8;
+                font-size:16px;
+                ">
+                Click the button below to create a new password.
+                </p>
+
+                <div style="
+                text-align:center;
+                margin:40px 0;
+                ">
+
+                <a
+                    href="${resetUrl}"
+                    style="
+                    display:inline-block;
+                    background:#dc2626;
+                    color:#ffffff;
+                    text-decoration:none;
+                    padding:16px 36px;
+                    border-radius:12px;
+                    font-size:16px;
+                    font-weight:600;
+                    "
+                >
+                    Reset Password
+                </a>
+
+                </div>
+
+                <div style="
+                background:#f9fafb;
+                border:1px solid #e5e7eb;
+                border-radius:10px;
+                padding:18px;
+                margin:30px 0;
+                ">
+
+                <p style="
+                    margin:0;
+                    color:#374151;
+                    font-size:14px;
+                    line-height:1.8;
+                ">
+                    <strong>This reset link will expire in 15 minutes.</strong><br><br>
+                    If the button doesn't work, copy and paste the link below into your browser:
+                </p>
+
+                <p style="
+                    margin-top:16px;
+                    word-break:break-word;
+                    font-size:14px;
+                ">
+                    <a
+                    href="${resetUrl}"
+                    style="color:#2563eb;"
+                    >
+                    ${resetUrl}
+                    </a>
+                </p>
+
+                </div>
+
+                <hr style="
+                border:none;
+                border-top:1px solid #e5e7eb;
+                margin:35px 0;
+                ">
+
+                <p style="
+                color:#6b7280;
+                font-size:14px;
+                line-height:1.8;
+                ">
+                If you didn't request a password reset, you can safely ignore this email.
+                Your password will remain unchanged.
+                </p>
+
+            </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div style="
+            max-width:620px;
+            margin:24px auto 0;
+            text-align:center;
+            color:#9ca3af;
+            font-size:13px;
+            line-height:1.8;
+            ">
+
+            <strong>AI PromptVault</strong><br>
+            Secure. Organize. Discover Better AI Prompts.<br><br>
+
+            © ${new Date().getFullYear()} AI PromptVault
+
+            </div>
+
+            </div>
+            `
   });
 };
 

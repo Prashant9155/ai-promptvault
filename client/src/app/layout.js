@@ -5,6 +5,9 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
+  icons: {
+    icon: "/icon.png",
+  },
   title: "AI PromptVault",
   description: "AI Prompt Management Platform",
 };
