@@ -1,0 +1,38 @@
+export const pricingPlans = [
+  {
+    id: "free",
+    name: "Free",
+    price: "₹0",
+    period: "/month",
+    description: "Perfect for students and individuals getting started.",
+    button: "Get Started Free",
+    featured: false,
+    features: [
+      "Store up to 25 prompts",
+      "Unlimited Collections",
+      "Smart Tags",
+      "Search Prompts",
+      "Version History",
+      "Community Support",
+    ],
+  },
+  {
+    id: "pro",
+    name: "Pro",
+    price: "₹10",
+    period: "/month",
+    description: "For developers, creators and AI professionals.",
+    button: "Upgrade to Pro",
+    featured: true,
+    features: [
+      "Unlimited Prompt Storage",
+      "Gemini AI Enhancement",
+      "Unlimited Collections",
+      "Version History",
+      "Favorites",
+      "AI Prompt Optimization",
+      "Future Premium Features",
+      "Priority Support",
+    ],
+  },
+];

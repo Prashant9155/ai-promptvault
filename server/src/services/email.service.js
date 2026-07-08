@@ -191,7 +191,7 @@ const sendPasswordResetEmail = async (email, token) => {
   await sendEmail({
     to: email,
     subject: "Reset your AI PromptVault password",
-            htmlContent: `
+    htmlContent: `
             <div style="
             background:#f5f7fb;
             padding:40px 20px;
@@ -361,7 +361,7 @@ const sendPasswordResetEmail = async (email, token) => {
             </div>
 
             </div>
-            `
+            `,
   });
 };
 
